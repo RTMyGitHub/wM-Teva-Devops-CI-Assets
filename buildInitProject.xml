@@ -4,7 +4,8 @@
 	<property file="System.properties" />
 	<property name="lib.dir" value="./lib" />
 
-	<import file="buildDependencies.xml" />
+	<!-- Enable to use Apache Ivy to download dependencies
+		import file="buildDependencies.xml" / -->
 
 
 	<!-- system properties properties -->
@@ -134,18 +135,6 @@
 		<!--<property name="fbrRepoName" value="${teva.projectName}_${baseRevision}_fbrRepo" />-->
 		<property name="buildOutputDir" location="${config.build.buildStorageDir}/${fbrRepoName}" />
 
-	</target>
-
-	<target name="teva.init.classpath" depends="teva.dependencies.fileset">
-		<echo message="Setting up classpath of local jars and ivy dependencies..." />
-		<path id="teva.classpath">
-			<!-- load custom ant tasks 
-			<fileset dir="${lib.dir}" includes="teva-utils.jar" /> -->
-			<!-- include all user defined jars which are in the lib/ext dir -->
-			<fileset dir="${lib.dir}/ext" includes="*.jar" />
-			<!-- reference other external/non-SAG and local SAG jars with ivy -->
-			<fileset refid="dependencies.fileset" />
-		</path>
 	</target>
 
 	<target name="common.create_dir" depends="common.check">
