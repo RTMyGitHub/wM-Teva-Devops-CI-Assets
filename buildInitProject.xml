@@ -1,182 +1,104 @@
 <?xml version="1.0"?>
-<project name="ProjectInitializer" default="" basedir=".">
+<!--
+    Copyright © 2018 Software AG, Darmstadt, Germany and/or its licensors
+    SPDX-License-Identifier: Apache-2.0
+    Licensed under the Apache License, Version 2.0 (the "License");
+    You may not use this file except in compliance with the License.
+    You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.                                                            
+ -->
 
-	<property file="System.properties" />
-	<property name="lib.dir" value="./lib" />
-
-	<!-- Enable to use Apache Ivy to download dependencies
-		import file="buildDependencies.xml" / -->
-
-
+<project name="ProjectInitializer" default="" basedir="." >
+	
 	<!-- system properties properties -->
-	<target name="teva.init.SAGHome" unless="SAGHome">
-		<fail message="System property 'SAGHome' should be defined!" />
+	<target name="initSAGHome" unless="SAGHome">
+		<fail message="System property 'SAGHome' should be defined!"/>
 	</target>
 
-	<target name="teva.init.DeployerInstallationPath" unless="config.deployer.deployerInstallationPath">
-		<fail message="System property 'config.deployer.deployerInstallationPath' should be defined!" />
+	<target name="initDeployerInstallationPath" unless="deployerInstallationPath">
+		<fail message="System property 'deployerInstallationPath' should be defined!"/>
 	</target>
 
-	<target name="teva.init.DeployerHost" unless="config.deployer.deployerHost">
-		<fail message="System property 'config.deployer.deployerHost' should be defined!" />
+	<target name="initDeployerHost" unless="deployerHost">
+		<fail message="System property 'deployerHost' should be defined!"/>
 	</target>
-
-	<target name="teva.init.DeployerPort" unless="config.deployer.deployerPort">
-		<fail message="System property 'config.deployer.deployerPort' should be defined!" />
+	
+	<target name="initDeployerPort" unless="deployerPort">
+		<fail message="System property 'deployerPort' should be defined!"/>
 	</target>
-
-	<target name="teva.init.DeployerUsername" unless="config.deployer.deployerUsername">
-		<fail message="System property 'config.deployer.deployerUsername' should be defined!" />
+	
+	<target name="initDeployerUsername" unless="deployerUsername">
+		<fail message="System property 'deployerUsername' should be defined!"/>
 	</target>
-
-	<target name="teva.init.DeployerPassword" unless="config.deployer.deployerPassword">
-		<fail message="System property 'config.deployer.deployerPassword' should be defined!" />
-	</target>
-
-	<!-- mandatory properties -->
-	<target name="teva.init.buildStorageDir" unless="config.build.buildStorageDir">
-		<fail message="Property 'config.build.buildStorageDir' should be defined!" />
-	</target>
-
-	<target name="teva.init.TargetEnv" unless="teva.targetEnv">
-		<fail message="Set property 'teva.targetEnv' to define a target environment, e.g. DEV, TEST or PROD. Must be defined in ENV.properties file." />
-	</target>
-
-	<!-- optional properties -->
-	<target name="teva.init.ProjectName" unless="teva.projectName">
-		<echo message="Setting project name to config.project.projectName='${config.project.projectName}'."/>
-		<property name="teva.projectName" value="${config.project.projectName}"/>
+	
+	<target name="initDeployerPassword" unless="deployerPassword">
+		<fail message="System property 'deployerPassword' should be defined!"/>
 	</target>
 			
-	<target name="teva.init.ISProjectsDir" unless="isProjectsDir">
-		<property name="isProjectsDir" value="" />
+	<!-- mandatory properties -->
+	<target name="initProjcetName" unless="projectName">
+		<fail message="Property 'projectName' should be defined!"/>
 	</target>
-
-	<target name="teva.init.BPMProjectsDir" unless="bpmProjectsDir">
-		<property name="bpmProjectsDir" value="" />
-	</target>
-
-	<target name="teva.init.MWSProjectsDir" unless="mwsProjectsDir">
-		<property name="mwsProjectsDir" value="" />
-	</target>
-
-	<target name="teva.init.RulesProjectsDir" unless="rulesProjectsDir">
-		<property name="rulesProjectsDir" value="" />
-	</target>
-
-	<target name="teva.init.UMProjectDir" unless="umProjectsDir">
-		<property name="umProjectsDir" value="" />
-	</target>
-
-	<target name="teva.init.TestPackageNamePattern" unless="testPackageNamePattern">
-		<property name="testPackageNamePattern" value="" />
-	</target>
-	
-	<target name="teva.init.ReportDirProperty" unless="teva.reportDir">
-		<property name="teva.reportDir" value="${config.test.reportDir}" />
-		<log msg="'teva.reportDir' not set externally, setting to '${teva.reportDir}'."/>
-	</target>
-	
-	<target name="teva.init.ReportDir" depends="teva.init.ReportDirProperty">
-		<antcall target="common.create_dir">
-			<param name="dir" value="${teva.reportDir}" />
-			<param name="overwrite" value="true" />
-		</antcall>
-	</target>
-
-	<target name="teva.init.BuildNumber.internal" unless="env.BUILD_NUMBER">
-		<property file="build.number" />
-		<propertyfile file="build.number">
-			<entry key="build_number" type="int" operation="+" value="1" />
-		</propertyfile>
-		<echo message="Setting build.number to value as defined in properties file 'build.number'."/>
-		<property name="build.number" value="${build_number}" />
-	</target>
-	<target name="teva.init.BuildNumber.external" if="env.BUILD_NUMBER">
-		<echo message="Setting build.number to env.BUILD_NUMBER=${env.BUILD_NUMBER}"/>
-		<property name="build.number" value="${env.BUILD_NUMBER}" />
-	</target>
-	<target name="teva.init.BuildNumber" depends="teva.init.BuildNumber.internal, teva.init.BuildNumber.external">
-		<echo message="Setting build.number to '${build.number}'"/>
-	</target>
-
-	<!--Main Init targets-->
-	<target name="teva.init.SystemProperties" depends="teva.init.SAGHome,teva.init.DeployerInstallationPath,teva.init.DeployerHost,teva.init.DeployerPort,teva.init.DeployerUsername,teva.init.DeployerPassword">
-	</target>
-
-	<target name="teva.init.MandatoryProperties" depends="teva.init.ProjectName,teva.init.buildStorageDir,teva.init.TargetEnv">
-	</target>
-
-	<target name="teva.init.OptionalProperties" depends="teva.init.ReportDir, teva.init.BuildNumber, teva.init.ISProjectsDir, teva.init.BPMProjectsDir,teva.init.MWSProjectsDir,teva.init.RulesProjectsDir,teva.init.UMProjectDir,teva.init.TestPackageNamePattern">
-	</target>
-	
-	<target name="teva.init.taskdefs">
-	<property name="teva.logging.log4j.propertiesFile" location="./resources/log4j.properties" />
-		<taskdef name="log" classname="com.softwareag.wx.teva.utils.ant.tevaLogger" classpathref="teva.classpath" />
-		<taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="teva.classpath" />
-		<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpathref="teva.classpath" />
-		<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy" classpathref="teva.classpath" />
-	
-	</target>
-
-	<target name="teva.init.Project" depends="teva.init.classpath, teva.init.taskdefs, teva.init.SystemProperties, teva.init.MandatoryProperties, teva.init.OptionalProperties" description="teva.init. properties needed for the project">
 		
-		<antcall target="common.create_dir">
-			<param name="dir" value="${config.tmpdir}" />
-		</antcall>
-
-		<property name="baseRevision" value="${config.build.version}.${build.number}" />
-		<!-- build.version is for ABE, see "master_build_Reference/build.properties" -->
-		<property name="build.version" value="${teva.projectName}_${config.build.version}" />
-		<!-- build_number is for ABE, see "${SAG_HOME}/common/AssetBuildEnvironment/build.number" -->
-		<property name="build_number" value="${build.number}" />
-
-		<property name="fbrRepoName" value="${teva.projectName}_fbrRepo" />
-		<!--<property name="fbrRepoName" value="${teva.projectName}_${baseRevision}_fbrRepo" />-->
-		<property name="buildOutputDir" location="${config.build.buildStorageDir}/${fbrRepoName}" />
-
+	<target name="initBuildOutputDir" unless="buildOutputDir">
+		<fail message="Property 'buildOutputDir' should be defined!"/>
+	</target>
+	
+	<target name="initRepositoryName" unless="repositoryName">
+		<fail message="Property 'repositoryName' should be defined!"/>
+	</target>
+	
+	<target name="initDeployerProjectDefinition" unless="deployerProjectDefinition">
+		<fail message="Property 'deployerProjectDefinition' should be defined!"/>
 	</target>
 
-	<target name="common.create_dir" depends="common.check">
-		<if>
-			<equals arg1="${overwrite}" arg2="true" />
-			<then>
-				<antcall target="common.deldir">
-					<param name="dir" value="${dir}" />
-				</antcall>
-			</then>
-		</if>
-		<log level="INFO" msg="Creating dir '${dir}'" />
-		<mkdir dir="${dir}" />
+	
+	<!-- optional properties -->
+	<target name="initISProjectsDir" unless="isProjectsDir">
+		<property name="isProjectsDir" value=""/>
+	</target>
+	
+	<target name="initISConfigDir" unless="isConfigDir">
+		<property name="isConfigDir" value=""/>
+	</target>
+	
+	<target name="initBPMProjectsDir" unless="bpmProjectsDir">
+		<property name="bpmProjectsDir" value=""/>
+	</target>
+	
+	<target name="initMWSProjectsDir" unless="mwsProjectsDir">
+		<property name="mwsProjectsDir" value=""/>
+	</target>
+	
+	<target name="initRulesProjectsDir" unless="rulesProjectsDir">
+		<property name="rulesProjectsDir" value=""/>
+	</target>
+	
+	<target name="initUMProjectDir" unless="umProjectsDir">
+		<property name="umProjectsDir" value=""/>
+	</target>
+	
+	<target name="initTestPackageNamePattern" unless="testPackageNamePattern">
+		<property name="testPackageNamePattern" value=""/>
+	</target>
+	
+	
+	<target name="initJenkinsReportDir" unless="jenkinsReportDir">
+		<property name="jenkinsReportDir" value=""/>
 	</target>
 
-
-	<target name="common.check">
-		<log msg="Checking for the existance of the directory ${dir}" level="DEBUG" />
-		<condition property="direxists">
-			<available file="${dir}" type="dir" />
-		</condition>
+	
+	<!--Main Init targets-->
+	<target name="initSystemProperties" depends="initSAGHome,initDeployerInstallationPath,initDeployerHost,initDeployerPort,initDeployerUsername,initDeployerPassword">
 	</target>
-
-	<target name="common.deldir" depends="common.check" if="direxists">
-		<log msg="Deleting the directory ${dir}" level="TRACE" />
-		<delete dir="${dir}" />
+	
+	<target name="initMandatoryProperties" depends="initProjcetName,initBuildOutputDir,initRepositoryName,initDeployerProjectDefinition">
 	</target>
-
-
-	<target name="common.checkos">
-		<condition property="testrunner.cmd" value="${soapUI.home}/bin/testrunner.bat">
-			<os family="windows" />
-		</condition>
-		<condition property="testrunner.cmd" value="${soapUI.home}/bin/testrunner.sh">
-			<os family="unix" />
-		</condition>
+	
+	<target name="initOptionalProperties" depends="initISProjectsDir,initISConfigDir,initBPMProjectsDir,initMWSProjectsDir,initRulesProjectsDir,initUMProjectDir,initTestPackageNamePattern,initJenkinsReportDir">
 	</target>
-
-	<target name="common.createLogDir">
-		<!-- create the common log dir -->
-		<mkdir dir="${teva.logging.dir}" />
+		
+	<target name="initProject" depends="initSystemProperties,initMandatoryProperties,initOptionalProperties" description="init properties needed for the project">
 	</target>
-
-
+	
 </project>
