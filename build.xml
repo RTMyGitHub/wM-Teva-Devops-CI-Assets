@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<project name="teva" default="buildDeployTest" basedir=".">
+	<property file="${project.properties}" />
+	<property file="System.properties" />
+
+	<import file="buildInitProject.xml" />
+	<import file="buildCallABE.xml" />
+	<import file="buildDeployer.xml" />
+	<import file="buildTest.xml" />
+	<import file="buildISCCR.xml" />
+	<import file="buildRepo.xml" />
+
+	<target name="build" depends="teva.init.Project, teva.abe.buildWM, teva.repo.processBuildOutput">
+		<description>Build project.</description>
+	</target>
+
+	<target name="deploy" depends="teva.init.Project, teva.repo.prepareFbrForDeployment, teva.deployer.startDeployer">
+		<description>Deploy project.</description>
+	</target>
+
+	<target name="extractVarSubTemplates" depends="teva.init.Project">
+		<description>Extract varsub.</description>
+		<ant antfile="buildDeployerVarSub.xml" target="teva.deployer.varsub.generateVarSubTemplates" inheritrefs="true" />
+	</target>
+
+	<!-- Artifactory / SCM tasks below can be enabled on demand
+		<target name="prepareArtifactoryDownloadSpec" depends="teva.init.Project, teva.repo.prepareArtifactoryDownloadSpec">
+		<description>Preparing download spec.</description>
+	</target>
+
+	<target name="prepareArtifactoryUploadSpec" depends="teva.init.Project, teva.repo.processBuildOutputForArtifactory">
+		<description>Preparing Upload spec.</description>
+	</target> -->
+
+	<!-- Enable if test scripts are created  and available for use with wM Test Suite
+	<target name="test" depends="teva.init.Project, teva.test.startTest">
+		<description>Run tests.</description>
+	</target> -->
+
+	<!-- Enable if Static code analysis is required. Static code analysis config file is in resources/isccr directory
+	<target name="staticCodeAnalysis" depends="teva.init.Project, teva.test.isccr.reviewPackages">
+		<description>Run static code analysis.</description>
+	</target> -->
+	
+	<target name="buildDeployTest" depends="build, deploy">
+		<description>Build and deploy the project.</description>
+	</target>
+
+	<!-- Enable if Apache Ivy needs to download external jars required for the CI process
+	<target name="_getJarsToLocal" depends="teva.init.Project, teva.dependencies.util.downloadJarsToLibFolder">
+		<description>Get jars from remote repo with ivy and then retrieve into local lib/ext folder</description>
+	</target>
+	-->
+
+</project>
