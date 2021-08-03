@@ -12,8 +12,7 @@
 	<xsl:param name="testISPort"/>
 	<xsl:param name="testISUsername"/>
 	<xsl:param name="testISPassword"/>
-
-	<xsl:param name="Env"/>
+	
 	<xsl:param name="repoName"/>
 	<xsl:param name="repoPath"/>
 	<xsl:param name="projectName"/>
@@ -26,28 +25,24 @@
 	
 	<xsl:template match="DeployerSpec/DeployerServer">
 		<DeployerServer>
-			<host><xsl:value-of select="$host"/>:<xsl:value-of select="$port"/></host>
-			<user><xsl:value-of select="$user"/></user>
-			<pwd><xsl:value-of select="$pwd"/></pwd>
+			<host><xsl:value-of select="$deployerHost"/>:<xsl:value-of select="$deployerPort"/></host>
+			<user><xsl:value-of select="$deployerUsername"/></user>
+			<pwd><xsl:value-of select="$deployerPassword"/></pwd>
 		</DeployerServer>
 	</xsl:template>
 
-	<xsl:template match="DeployerSpec/Environments/$Env">
+	<xsl:template match="DeployerSpec/Environment">
 	    <Environment>
 			<IS>
-			<xsl:for-each select ="$Env/is_alias">
-				<isalias name="is_alias/@name">
-					<host><xsl:value-of select="$host"/></host>
-					<port><xsl:value-of select="$port"/></port>
-					<user><xsl:value-of select="$user"/></user>
-					<pwd><xsl:value-of select="$pwd"/></pwd>
+				<isalias name="testServer">
+					<host><xsl:value-of select="$testISHost"/></host>
+					<port><xsl:value-of select="$testISPort"/></port>
+					<user><xsl:value-of select="$testISUsername"/></user>
+					<pwd><xsl:value-of select="$testISPassword"/></pwd>
 					<useSSL>false</useSSL>
-					<version>10.7</version>
 					<installDeployerResource>true</installDeployerResource>
-					<Test>false</Test>
-					<executeACL>Administrators</executeACL>
+					<Test>true</Test>
 				</isalias>
-				</xsl:for-each>
 			</IS>
 			<xsl:apply-templates select="@* | *" />
 		</Environment>
@@ -57,7 +52,7 @@
 	<xsl:template match="DeployerSpec/Environment/Repository">
 		<Repository>
 			<xsl:apply-templates select="@* | *" />
-
+			
 			<repalias>
 			<xsl:attribute name="name"><xsl:value-of select="$repoName"/></xsl:attribute>
 				<type>FlatFile</type>
