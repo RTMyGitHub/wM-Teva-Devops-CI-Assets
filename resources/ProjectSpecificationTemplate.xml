@@ -6,9 +6,9 @@
 		<user>Administrator</user>
 		<pwd>{AES}Y5IgMqjfvkgbg7p5VUZztw==</pwd>
 	</DeployerServer>
-  <Environments>
-		<DEV>
-			<is_alias name="DEV">
+   <Environment>
+		<IS>
+			<isalias name="Development">
 				<host>localhost</host>
 				<port>5555</port>
 				<user>Administrator</user>
@@ -16,55 +16,57 @@
 				<useSSL>false</useSSL>
 				<installDeployerResource>true</installDeployerResource>
 				<Test>true</Test>
-			</is_alias>
-		</DEV>
-		<TEST>
-			<is_alias name="TEST">
+			</isalias>
+		</IS>
+		<IS>
+			<isalias name="Test">
 				<host>localhost</host>
 				<port>5555</port>
 				<user>Administrator</user>
 				<pwd>{AES}Y5IgMqjfvkgbg7p5VUZztw==</pwd>
 				<useSSL>false</useSSL>
 				<Test>true</Test>
-			</is_alias>	
-		</TEST>
-		<QA>
-			<is_alias name="QA_NODE_1">
+			</isalias>	
+		</IS>
+		<IS>
+			<isalias name="Qual">
 				<host>localhost</host>
-				<port>8585</port>
+				<port>5555</port>
+				<user>sysadmin</user>
+				<!-- <pwd>{AES}Y5IgMqjfvkgbg7p5VUZztw==</pwd> -->
+				<pwdHandle>DevPass</pwdHandle>
+				<useSSL>false</useSSL>
+				<Test>true</Test>
+			</isalias>
+			<isalias name="Qual">
+				<host>localhost</host>
+				<port>5555</port>
 				<user>sysadmin</user>
 				<pwd>{AES}Y5IgMqjfvkgbg7p5VUZztw==</pwd>
 				<useSSL>false</useSSL>
 				<Test>true</Test>
-			</is_alias>
-			<is_alias name="QA_NODE_1">
-				<host>localhost</host>
-				<port>8585</port>
-				<user>sysadmin</user>
-				<pwd>{AES}Y5IgMqjfvkgbg7p5VUZztw==</pwd>
-				<useSSL>false</useSSL>
-				<Test>true</Test>
-			</is_alias>
-		</QA>
-		<PROD>
-			<is_alias name="PROD_NODE_1">
+			</isalias>
+		</IS>
+		<IS>
+			<isalias name="Prod">
 				<host>localhost</host>
 				<port>5555</port>
 				<user>Administrator</user>
 				<pwd>{AES}Y5IgMqjfvkgbg7p5VUZztw==</pwd>
 				<useSSL>false</useSSL>
 				<Test>true</Test>
-			</is_alias>
-			<is_alias name="PROD_NODE_2">
+			</isalias>
+			<isalias name="Prod">
 				<host>localhost</host>
 				<port>5555</port>
 				<user>Administrator</user>
 				<pwd>{AES}Y5IgMqjfvkgbg7p5VUZztw==</pwd>
 				<useSSL>false</useSSL>
 				<Test>true</Test>
-			</is_alias>
-		</PROD>		
-	 <Repository></Repository>	
-	</Environments>
-	<Projects></Projects>
+			</isalias>
+		</IS>		
+		<Repository>
+		</Repository>	
+	</Environment>
+    <Projects></Projects>
 </DeployerSpec>
