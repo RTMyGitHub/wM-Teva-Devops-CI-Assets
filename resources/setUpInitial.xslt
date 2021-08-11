@@ -12,8 +12,7 @@
 	<xsl:param name="testISPort"/>
 	<xsl:param name="testISUsername"/>
 	<xsl:param name="testISPassword"/>
-
-	<xsl:param name="Env"/>
+	<xsl:param name="EnvAlias"/>
 	<xsl:param name="repoName"/>
 	<xsl:param name="repoPath"/>
 	<xsl:param name="projectName"/>
@@ -26,49 +25,28 @@
 	
 	<xsl:template match="DeployerSpec/DeployerServer">
 		<DeployerServer>
-			<host><xsl:value-of select="$host"/>:<xsl:value-of select="$port"/></host>
-			<user><xsl:value-of select="$user"/></user>
-			<pwd><xsl:value-of select="$pwd"/></pwd>
+			<host><xsl:value-of select="host"/>:<xsl:value-of select="port"/></host>
+			<user><xsl:value-of select="user"/></user>
+			<pwd><xsl:value-of select="pwd"/></pwd>
 		</DeployerServer>
 	</xsl:template>
 
-	<xsl:template match="DeployerSpec/Environments/$Env">
+	<xsl:template match="DeployerSpec/Environment">
 	    <Environment>
 			<IS>
-			<xsl:for-each select ="$Env/is_alias">
-				<isalias name="is_alias/@name">
-					<host><xsl:value-of select="$host"/></host>
-					<port><xsl:value-of select="$port"/></port>
-					<user><xsl:value-of select="$user"/></user>
-					<pwd><xsl:value-of select="$pwd"/></pwd>
-					<useSSL>false</useSSL>
-					<version>10.7</version>
-					<installDeployerResource>true</installDeployerResource>
-					<Test>false</Test>
-					<executeACL>Administrators</executeACL>
-				</isalias>
-				</xsl:for-each>
+				<xsl:apply-templates select="IS/isalias[@name=$EnvAlias]"/>
 			</IS>
-			<xsl:apply-templates select="@* | *" />
+			<Repository>
+				<repalias>
+					<xsl:attribute name="name"><xsl:value-of select="$repoName"/></xsl:attribute>
+					<type>FlatFile</type>
+					<urlOrDirectory><xsl:value-of select="$repoPath"/></urlOrDirectory>
+					<Test>false</Test>
+				</repalias>
+			</Repository>
 		</Environment>
 	</xsl:template>
 
-	
-	<xsl:template match="DeployerSpec/Environment/Repository">
-		<Repository>
-			<xsl:apply-templates select="@* | *" />
-
-			<repalias>
-			<xsl:attribute name="name"><xsl:value-of select="$repoName"/></xsl:attribute>
-				<type>FlatFile</type>
-				<urlOrDirectory><xsl:value-of select="$repoPath"/></urlOrDirectory>
-				<Test>true</Test>
-			</repalias>
-	
-		</Repository>
-	</xsl:template>
-	
-	
 	<xsl:template match="DeployerSpec/Projects">
 		<Projects>
 			<xsl:apply-templates select="@* | *" />

@@ -12,7 +12,7 @@
 	<!-- XSLT for the Deployer Project Specification - adding Repository and Project Sections -->
 	<property name="initialXSLT" value="resources/setUpInitial.xslt"/>
 	
-	<target name="deployWM" description="main deploy task" depends="startDeployment, initPAandDeployerWindows, initPAandDeployerUnix, createDeployerSpec,execProjectAutomator,triggerDeploy">
+	<target name="deployWM" description="main deploy task" depends="startDeployment,initPAandDeployerWindows,initPAandDeployerUnix,createDeployerSpec,execProjectAutomator,triggerDeploy">
 	</target>
 
 	<target name="startDeployment">		
@@ -55,17 +55,7 @@
 	<target name="setupDeployerSpec" description="Creates the project automator xml with XSLT based on the given variables.">				
 		<xslt style="${initialXSLT}" in="${deployerProjectDefinitionTemplate}" out="${deployerProjectDefinition}">
 			<!--build/deployer server props -->
-			<param name="deployerHost" expression="${deployerHost}" />
-			<param name="deployerPort" expression="${deployerPort}" />
-			<param name="deployerUsername" expression="${deployerUsername}" />
-			<param name="deployerPassword" expression="${deployerPassword}" />
-			<param name="Env" expression="${targetEnv}" />
-			<!--target server props -->
-			<param name="testISHost" expression="${testISHost}" />
-			<param name="testISPort" expression="${testISPort}" />
-			<param name="testISUsername" expression="${testISUsername}" />
-			<param name="testISPassword" expression="${testISPassword}" />
-			
+			<param name="EnvAlias" expression="${targetEnv}" />
 			<!-- general props -->
 			<param name="repoName" expression="${repositoryName}" />
 			<param name="repoPath" expression="${buildOutputDir}" />
