@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<TestServer>
+		<testHost>localhost</testHost>
+		<testPort>5555</testPort>
+		<testUsername>Administrator</testUsername>
+		<testPassword>manage</testPassword>
+	</TestServer>

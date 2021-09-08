@@ -2,9 +2,11 @@
 
 <project name="Deploy" default="deployWM" basedir=".">
      
+	<xmlproperty file="resources/DeployEnv.xml" collapseAttributes="true"/>
+
 	<!-- Global Variables that concern the code and should be changed only if the code is changed -->
 	<!-- Template for the Deployer Project Specification -->
-	<property name="deployerProjectDefinitionTemplate" value="resources/ProjectSpecificationTemplate.xml"/>
+	<property name="deployerProjectDefinitionTemplate" value="resources/DeployEnv.xml"/>
 	
 	<!-- Target filename of the Deployer Project Specification for this run -->
 	<property name="deployerProjectDefinition" value="${workspace.dir}/ProjectAutomator/${projectName}DeploymentSpec.xml"/>
@@ -90,11 +92,11 @@
 		<exec executable="${deployerInstallationPath}/${deployerExecutable}" dir="${deployerInstallationPath}" failonerror="true" resultproperty="appState">
 			<arg value="--deploy"/>
 			<arg line="-project ${projectName}"/>
-			<arg line="-dc myDeployment"/>
-			<arg line="-host ${deployerHost}"/>
-			<arg line="-port ${deployerPort}"/>
-			<arg line="-user ${deployerUsername}"/>
-			<arg line="-pwd ${deployerPassword}"/>
+			<arg line="-dc myDeployment"/> 
+			<arg line="-host ${DeployerSpec.DeployerServer.deployerHost}"/>
+			<arg line="-port ${DeployerSpec.DeployerServer.deployerPort}"/>
+			<arg line="-user ${DeployerSpec.DeployerServer.deployerUsername}"/>
+			<arg line="-pwd ${DeployerSpec.DeployerServer.deployerPassword}"/>
 			<arg value="-force"/>
 		</exec>
 		

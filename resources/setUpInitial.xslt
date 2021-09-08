@@ -3,15 +3,6 @@
 	
 	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
 	
-	<xsl:param name="deployerHost"/>
-	<xsl:param name="deployerPort"/>
-	<xsl:param name="deployerUsername"/>
-	<xsl:param name="deployerPassword"/>
-	
-	<xsl:param name="testISHost"/>
-	<xsl:param name="testISPort"/>
-	<xsl:param name="testISUsername"/>
-	<xsl:param name="testISPassword"/>
 	<xsl:param name="EnvAlias"/>
 	<xsl:param name="repoName"/>
 	<xsl:param name="repoPath"/>
@@ -25,9 +16,9 @@
 	
 	<xsl:template match="DeployerSpec/DeployerServer">
 		<DeployerServer>
-			<host><xsl:value-of select="host"/>:<xsl:value-of select="port"/></host>
-			<user><xsl:value-of select="user"/></user>
-			<pwd><xsl:value-of select="pwd"/></pwd>
+			<host><xsl:value-of select="deployerHost"/>:<xsl:value-of select="deployerPort"/></host>
+			<user><xsl:value-of select="deployerUsername"/></user>
+			<pwd><xsl:value-of select="deployerPassword"/></pwd>
 		</DeployerServer>
 	</xsl:template>
 
@@ -64,7 +55,7 @@
 				
 				<DeploymentMap description="" name="myDeploymentMap"/>			
 				<MapSetMapping mapName="myDeploymentMap" setName="myDeploymentSet">								
-					<alias type="IS">testServer</alias>
+					<alias type="IS"><xsl:value-of select="$EnvAlias"/></alias>
 				</MapSetMapping>	
 				<DeploymentCandidate description="" mapName="myDeploymentMap" name="myDeployment"/>
 			</Project>

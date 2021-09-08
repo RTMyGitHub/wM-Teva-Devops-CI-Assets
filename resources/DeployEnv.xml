@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <DeployerSpec exitOnError="false" sourceType="Repository">
 	<DeployerServer>
-		<host>localhost</host>
-		<port>5555</port>
-		<user>Administrator</user>
-		<pwd>{AES}Y5IgMqjfvkgbg7p5VUZztw==</pwd>
+		<deployerHost>localhost</deployerHost>
+		<deployerPort>5555</deployerPort>
+		<deployerUsername>Administrator</deployerUsername>
+		<deployerPassword>manage</deployerPassword>
 	</DeployerServer>
    <Environment>
 		<IS>
@@ -12,7 +12,7 @@
 				<host>localhost</host>
 				<port>5555</port>
 				<user>Administrator</user>
-				<pwd>{AES}Y5IgMqjfvkgbg7p5VUZztw==</pwd>
+				<pwd>manage</pwd>
 				<useSSL>false</useSSL>
 				<installDeployerResource>true</installDeployerResource>
 				<Test>true</Test>
