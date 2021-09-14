@@ -6,15 +6,19 @@
 	<xmlproperty file="resources/TestEnv.xml" collapseAttributes="true"/>
 
 	<path id="junitClasspath">
-		<fileset dir="${SAGHome}/common/lib/ext" includes="enttoolkit.jar" />
-		<fileset dir="${SAGHome}/common/lib" includes="**/gf.javax.mail.jar" />
-		<fileset dir="${SAGHome}/common/lib" includes="wm-isclient.jar" />
-		<fileset dir="${SAGHome}/IntegrationServer/lib" includes="wm-isserver.jar" />
+		<!-- <fileset dir="${SAGHome}/common/lib/ext" includes="enttoolkit.jar" /> -->
+		<fileset dir="${SAGHome}/common/lib/ext" includes="*.jar" />
+		<fileset dir="${SAGHome}/common/lib/glassfish" includes="*.jar" />
+		<fileset dir="${SAGHome}/common/lib" includes="*.jar" />
+		<fileset dir="${SAGHome}/IntegrationServer/lib" includes="*.jar" />
+		<!-- <fileset dir="./lib" includes="commons-jxpath-*.jar" />
+		<fileset dir="./lib" includes="hamcrest=core.jar" /> -->
 		<fileset dir="./lib" includes="httpunit.jar" />
-		<fileset dir="./lib" includes="junit*.jar" />
-		<fileset dir="./lib" includes="xmlunit*.jar" />
+		<fileset dir="./lib" includes="junit.jar" />
 		<fileset dir="./lib" includes="serviceInterceptor.jar" />
 		<fileset dir="./lib" includes="serviceMockClient.jar" />
+		<fileset dir="./lib" includes="wmjxpath.jar" />
+		<fileset dir="./lib" includes="xmlunit*.jar" />
 	</path>
 	
 	<target name="startTest" depends="jenkinsCheck">		
@@ -76,19 +80,18 @@
 		
 		<for param="testSetupFile" keepgoing="true">
 			<path>
-				<!--fileset dir="${testPackageXmlDir}" includes="*.xml" /-->
 				<fileset dir="${testPackageName}" includes="**/setup/*.xml" />
 			</path>
 			<sequential>
 				<basename property="fileBasename" file="@{testSetupFile}" suffix=".xml" />
-				<echo message="Running JUnit test '@{testSetupFile}'"/>
+				<echo message="Running JUnit test '@{testSetupFile} on ${TestServer.testHost} on ${TestServer.testPort} using ${TestServer.testUsername} and ${TestServer.testPassword}  '"/>
 				<junit printsummary="yes" haltonfailure="no" fork="true" failureproperty="test:failure" showoutput="true" dir="${testPackageName}">
 					<jvmarg value="-DwebMethods.integrationServer.name=${TestServer.testHost}" />
 					<jvmarg value="-DwebMethods.integrationServer.port=${TestServer.testPort}" />
 					<jvmarg value="-DwebMethods.integrationServer.userid=${TestServer.testUsername}" />
 					<jvmarg value="-DwebMethods.integrationServer.password=${TestServer.testPassword}" />
+					<!-- <jvmarg value="-DwebMethods.integrationServer.ssl=" /> -->
 					<jvmarg value="-DwebMethods.test.setup.filename=@{testSetupFile}" />
-					<!--jvmarg value="-Dresources.folder=${resourcesFolder}" /-->
 					<classpath>
 						<path refid="junitClasspath" />
 					</classpath>
